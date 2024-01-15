@@ -4,9 +4,10 @@ import { storeToRefs } from 'pinia';
 import { onBeforeMount } from 'vue';
 
 import CodeEditor from '@/common/components/CodeEditor.vue';
+import type { ScriptBody } from '@/common/interfaces';
 
 const examStore = useExamStore();
-const { questions, currentLanguage, currentIndex, currentQuestion, jdoodleToken } = storeToRefs(examStore)
+const { questions, currentLanguage, currentIndex, currentQuestion, jdoodleToken } = storeToRefs(examStore);
 
 const jdoodleCredentials = {
   clientId: import.meta.env.VITE_CLIENT_ID,
@@ -17,14 +18,22 @@ function submitQuestion() {
   console.log('Submit');
 }
 
-function testCode() {
+async function testCode(script: string) {
+  const answerData: ScriptBody = {
+    ...jdoodleCredentials,
+    language: currentLanguage.value,
+    versionIndex: '0',
+    script,
+  };
+
+  await examStore.validateAnswer(answerData);
   console.log('test');
 }
 
 onBeforeMount(async () => {
   examStore.selectQuestions();
   // Await JDoodle token
-  await examStore.getJDoodleToken(jdoodleCredentials);
+  // await examStore.getJDoodleToken(jdoodleCredentials);
 });
 </script>
 
@@ -74,7 +83,7 @@ onBeforeMount(async () => {
       v-model:language="currentLanguage"
       :socketToken="jdoodleToken"
       @submit="submitQuestion()"
-      @test="testCode()"
+      @test="testCode($event)"
     />
 
   </section>

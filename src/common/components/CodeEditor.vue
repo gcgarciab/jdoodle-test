@@ -160,14 +160,14 @@ onMounted(() => {
           no-caps
           label="Run Code"
           class="action bg-neutral-300 text-black"
-          @click="emit('test')"
+          @click="emit('test', code)"
         />
 
         <QBtn
           no-caps
           label="Submit Code"
           class="action bg-green-500"
-          @click="emit('submit')"
+          @click="emit('submit', code)"
         />
       </div>
     </div>

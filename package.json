@@ -33,7 +33,7 @@
     "vue-codemirror": "^6.1.1",
     "vue-router": "^4.2.5",
     "webstomp-client": "^1.2.6",
-    "ws": "^8.16.0"
+    "ws": "^8.16.0",
   },
   "devDependencies": {
     "@pinia/testing": "^0.1.3",

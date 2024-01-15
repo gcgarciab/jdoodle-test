@@ -15,3 +15,5 @@ export function shuffleList<T>(list: T[]): T[] {
 
   return list;
 }
+
+export default shuffleList;

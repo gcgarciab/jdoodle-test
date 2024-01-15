@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { shuffleList } from '@/common/utils';
 import { QUESTIONS } from '@/common/constants';
-import type { AuthCredentials, ExamState } from '@/common/interfaces';
+import type { AuthCredentials, ExamState, ScriptBody } from '@/common/interfaces';
 import { requests } from '@/plugins';
 
 export const useExamStore = defineStore('exam', {
@@ -29,8 +29,9 @@ export const useExamStore = defineStore('exam', {
       this.questions = shuffledQuestions.slice(0, 5);
     },
 
-    compileQuestionSolution(data: string) {
-
+    async validateAnswer(data: ScriptBody) {
+      const result = await requests.post('/execute', data);
+      console.log(result);
     },
 
     async submitQuestion(data: string) {
@@ -38,7 +39,7 @@ export const useExamStore = defineStore('exam', {
     },
 
     async getJDoodleToken(credentials: AuthCredentials) {
-      this.jdoodleToken = await requests.post('auth-token', credentials);
+      this.jdoodleToken = await requests.post('/auth-token', credentials);
     },
   },
 });

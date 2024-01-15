@@ -1,3 +1,4 @@
+import { showNotify } from '@/common/utils';
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -8,6 +9,7 @@ const axiosInstance: AxiosInstance = axios.create({
   headers: {
     Accept: 'application/json', // https://github.com/axios/axios/issues/4783
     'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
   },
 });
 
@@ -45,6 +47,7 @@ axiosInstance.interceptors.response.use(
 
   async (error) => {
     console.log('Request error', error);
+    showNotify('negative', error.response);
     return Promise.reject(error.response?.data);
   },
 );
