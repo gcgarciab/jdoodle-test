@@ -6,6 +6,7 @@ const isLocalEnv = import.meta.env.VITE_NODE_ENV === 'development.local';
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: isLocalEnv ? '/' : apiUrl,
   headers: {
+    Accept: 'application/json', // https://github.com/axios/axios/issues/4783
     'Content-Type': 'application/json',
   },
 });

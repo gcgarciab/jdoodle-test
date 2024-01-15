@@ -1,7 +1,9 @@
-export const QUESTIONS = [
+import type { Question } from '../interfaces';
+
+export const QUESTIONS: Question[] = [
   {
     name: `Print values`,
-    example: `[1, 2] return 1, 2;`,
+    example: `Input: [1, 2] \nOutput: 1, 2;`,
     description: `Create a function that receive an array and return its values`,
     testCases: [
       { input: [1, 2], output: [1, 2] },
@@ -13,7 +15,7 @@ export const QUESTIONS = [
   },
   {
     name: `Concat values`,
-    example: `[1, 2] return 12; \n[10, 3, 4] return 1034;`,
+    example: `Input: [1, 2] \nOutput: 12; \n\nInput: [10, 3, 4] \nOutput: 1034;`,
     description: `Create a function that receive an array and return its values concatenated between them`,
     testCases: [
       { input: [1, 2], output: '12' },
@@ -25,7 +27,7 @@ export const QUESTIONS = [
   },
   {
     name: `Sum values`,
-    example: `[1, 2] return 3;`,
+    example: `Input: [1, 2] \nOutput: 3;`,
     description: `Create a function that receive an array and returns the SUM of its values`,
     testCases: [
       { input: [1, 2], output: 3 },
@@ -37,7 +39,7 @@ export const QUESTIONS = [
   },
   {
     name: `Substract values`,
-    example: `[1, 2] return -1; \n[10, 3, 4] return 3;`,
+    example: `Input: [1, 2] \nOutput: -1; \n\nInput: [10, 3, 4] \nOutput: 3;`,
     description: `Create a function that receive an array and return the subtraction of the first value with the other values`,
     testCases: [
       { input: [1, 2], output: -1 },
@@ -49,7 +51,7 @@ export const QUESTIONS = [
   },
   {
     name: `Multiply values`,
-    example: `[1, 2] return 2; \n[10, 3, 4] return 120;`,
+    example: `Input: [1, 2] \nOutput: 2; \n\nInput: [10, 3, 4] \nOutput: 120;`,
     description: `Create a function that receive an array and return the result of multiplying between them`,
     testCases: [
       { input: [1, 2], output: 2 },
@@ -61,7 +63,7 @@ export const QUESTIONS = [
   },
   {
     name: `Count values`,
-    example: `[1, 2] return 2; \n[10, 3, 4] return 3;`,
+    example: `Input: [1, 2] \nOutput: 2; \n\nInput: [10, 3, 4] \nOutput: 3;`,
     description: `Create a function that receive an array of items and return its length`,
     testCases: [
       { input: [1, 2], output: 2 },
@@ -73,7 +75,7 @@ export const QUESTIONS = [
   },
   {
     name: `Average values`,
-    example: `[1, 2] return 1.5; \n[10, 3, 5] return 6;`,
+    example: `Input: [1, 2] \nOutput: 1.5; \n\nInput: [10, 3, 5] \nOutput: 6;`,
     description: `Create a function that receive an array and return the AVERAGE of its values`,
     testCases: [
       { input: [1, 2], output: 1.5 },
@@ -85,7 +87,7 @@ export const QUESTIONS = [
   },
   {
     name: `Max value`,
-    example: `[1, 2, 3, 4] return 4; \n[10, 3, 4] return 10;`,
+    example: `Input: [1, 2, 3, 4] \nOutput: 4; \n\nInput: [10, 3, 4] \nOutput: 10;`,
     description: `Create a function that receive an array and return the MAX value of its values`,
     testCases: [
       { input: [1, 2], output: 2 },
@@ -97,7 +99,7 @@ export const QUESTIONS = [
   },
   {
     name: `Min value`,
-    example: `[1, 2, 3, 4] return 1; \n[10, 3, 4] return 3;`,
+    example: `Input: [1, 2, 3, 4] \nOutput: 1; \n\nInput: [10, 3, 4] \nOutput: 3;`,
     description: `Create a function that receive an array and return the MAX value of its values`,
     testCases: [
       { input: [1, 2], output: 1 },
@@ -109,7 +111,7 @@ export const QUESTIONS = [
   },
   {
     name: `Most repeated value`,
-    example: `[1, 2, 3, 4, 1] return 1; \n[1, 2, 3, 4] return 4;`,
+    example: `Input: [1, 2, 3, 4, 1] \nOutput: 1; \n\nInput: [1, 2, 3, 4] \nOutput: 4;`,
     description: `Create a function that receive an array and return the value that has more occurrences, if more that one value have the same occurrences, tthe returned value is the greather value between them.`,
     testCases: [
       { input: [1, 2], output: 2 },
@@ -119,4 +121,8 @@ export const QUESTIONS = [
       { input: [5, 6], output: 6 },
     ],
   },
-];
+].map((q, index) => ({
+  ...q,
+  id: index + 1,
+  submitted: false,
+}));
