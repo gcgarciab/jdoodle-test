@@ -40,6 +40,7 @@ export const useExamStore = defineStore('exam', {
 
     async getJDoodleToken(credentials: AuthCredentials) {
       this.jdoodleToken = await requests.post('/auth-token', credentials);
+      console.log('token', this.jdoodleToken);
     },
   },
 });
