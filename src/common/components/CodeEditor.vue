@@ -14,8 +14,9 @@ import { computed, onBeforeMount, onMounted, ref, toRefs, watch } from 'vue';
 import { DEFAULT_JAVA, DEFAULT_PHP, DEFAULT_PYTHON, DEFAULT_TYPESCRIPT } from '../constants';
 
 import webstomp from 'webstomp-client';
+import SockJS from 'sockjs-client/dist/sockjs.min.js';
 
-const socket = new WebSocket('wss://api.jdoodle.com/v1/stomp', ['https']);
+const socket = new SockJS(import.meta.env.VITE_WS_URL);
 const stompClient = webstomp.over(socket, { heartbeat: false, debug: true });
 
 const props = defineProps({
@@ -75,6 +76,7 @@ watchDebounced(
   code,
   (newValue) => {
     if (stompClient.connected) {
+      console.log('connected !!');
       stompClient.send('/app/execute-ws-api-token', newValue, {
         message_type: 'execute',
         token: socketToken.value,
@@ -117,9 +119,7 @@ function onWsConnectionFailed(e: any) {
 }
 
 onMounted(() => {
-  stompClient.connect({
-
-  }, onWsConnection, onWsConnectionFailed);
+  stompClient.connect({}, onWsConnection, onWsConnectionFailed);
 });
 </script>
 

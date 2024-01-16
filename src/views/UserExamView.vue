@@ -32,7 +32,6 @@ async function testCode(script: string) {
 
 onBeforeMount(async () => {
   examStore.selectQuestions();
-  // Await JDoodle token
   await examStore.getJDoodleToken(jdoodleCredentials);
 });
 </script>
