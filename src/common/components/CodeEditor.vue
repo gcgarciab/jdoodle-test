@@ -44,7 +44,7 @@ const code = ref('');
 const { language, socketToken } = toRefs(props);
 
 const editorStyle = {
-  height: 'calc(100vh - 60px)',
+  height: 'calc(100vh - 120px)',
   width: '100%',
   fontSize: '1.15rem',
 }
@@ -137,7 +137,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="question-editor h-screen py-2">
+  <div class="question-editor h-full pt-2">
     <Codemirror
       v-model="code"
       :style="editorStyle"

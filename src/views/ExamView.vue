@@ -5,7 +5,10 @@ import { onBeforeMount, ref, watch } from 'vue';
 
 import CodeEditor from '@/common/components/CodeEditor.vue';
 import type { ScriptBody, ScriptResponse, TestCase } from '@/common/interfaces';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
+const showCountDown = ref(false);
 const examStore = useExamStore();
 const runningScript = ref(false);
 const executionResult = ref<ScriptResponse | null>();
@@ -26,6 +29,10 @@ function buildScriptBody(script: string): ScriptBody {
   };
 }
 
+function finishTest() {
+  console.log('finish test !!!');
+}
+
 async function testScript(script: string) {
   currentExecution.value = 'test';
   const data = buildScriptBody(script);
@@ -39,7 +46,6 @@ async function submitScript(script: string) {
   const methodPositions: number[] = [...script.matchAll(new RegExp(testMethod, 'gi'))].map((a) => a.index!);
 
   if (methodPositions.length <= 1) return;
-  console.log('holi');
   // Replace code values with test cases input
   const lastIndex = methodPositions[1];
   const startPosition = script.slice(lastIndex, script.length).indexOf('[');
@@ -76,7 +82,11 @@ watch(currentIndex, () => {
 });
 
 onBeforeMount(async () => {
-  examStore.selectQuestions();
+  const isPractice = route.name === 'ExamPractice';
+
+  if (!questions.value.length) examStore.selectQuestions();
+  if (!isPractice) showCountDown.value = true;
+
   // await examStore.getJDoodleToken(jdoodleCredentials);
 });
 </script>
@@ -84,14 +94,14 @@ onBeforeMount(async () => {
 <template>
   <section
     v-if="questions.length"
-    class="user-test w-screen grid grid-cols-12 bg-gray-700"
+    class="user-test w-screen h-[calc(100vh-60px)] grid grid-cols-12 bg-gray-700"
   >
     <div class="questions col-span-3 flex flex-nowrap">
       <div class="quick-access">
         <QTabs
           v-model="currentIndex"
           vertical
-          class="w-14 bg-gray-800 h-screen"
+          class="w-14 h-full bg-gray-800"
           active-color="green-13"
         >
           <QTab
@@ -106,11 +116,15 @@ onBeforeMount(async () => {
         </QTabs>
       </div>
 
-
       <div
         v-if="currentQuestion"
-        class="current-question pt-14 pb-1 w-full text-white flex flex-col justify-between"
+        class="current-question pt-14 pb-1 w-full text-white flex flex-col justify-between relative"
       >
+        <CountDown
+          class="countdown text-white absolute right-0 top-0"
+          @finish="finishTest()"
+        />
+
         <div class="question-details px-8">
           <h2 class="question-name text-xl font-semibold">{{ currentQuestion.name }}</h2>
 

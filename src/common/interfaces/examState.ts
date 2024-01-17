@@ -6,4 +6,5 @@ export interface ExamState {
   currentIndex: number;
   currentLanguage: CodeLanguage;
   jdoodleToken: string;
+  totalQuestions: number;
 }

@@ -1,6 +1,8 @@
 import path from 'path';
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import Components from 'unplugin-vue-components/vite';
+
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -34,6 +36,23 @@ export default defineConfig({
     vue({
       include: [/\.vue$/, /\.md$/],
       reactivityTransform: true,
+    }),
+
+    Components({
+      dirs: [
+        'src/common/components',
+        'src/views',
+      ],
+      dts: 'src/components.d.ts',
+      extensions: ['vue'],
+      deep: true,
+      types: [
+        {
+          from: 'vue-router',
+          names: ['RouterLink', 'RouterView'],
+        },
+      ],
+      include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
     }),
   ],
 })

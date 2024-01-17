@@ -1,4 +1,4 @@
 export interface AuthCredentials {
-  clientId: string;
-  clientSecret: string;
+  email: string;
+  password: string;
 }

@@ -1,16 +1,19 @@
 import { defineStore } from 'pinia';
-import { shuffleList } from '@/common/utils';
-import { QUESTIONS } from '@/common/constants';
-import type { AuthCredentials, ExamState, ScriptBody, ScriptResponse } from '@/common/interfaces';
 import { requests } from '@/plugins';
+import { QUESTIONS } from '@/common/constants';
+import { getStoreState, shuffleList } from '@/common/utils';
+import type { AuthCredentials, ExamState, ScriptBody, ScriptResponse } from '@/common/interfaces';
+
+const INITIAL_STATE: ExamState = {
+  questions: [],
+  currentIndex: 0,
+  currentLanguage: 'typescript',
+  jdoodleToken: '',
+  totalQuestions: 5,
+}
 
 export const useExamStore = defineStore('exam', {
-  state: (): ExamState => ({
-    questions: [],
-    currentIndex: 0,
-    currentLanguage: 'typescript',
-    jdoodleToken: '',
-  }),
+  state: (): ExamState => getStoreState('examStore', INITIAL_STATE),
 
   getters: {
     examProgress: (state) => state.currentIndex / state.questions.length,
@@ -25,8 +28,8 @@ export const useExamStore = defineStore('exam', {
   actions: {
     selectQuestions() {
       const shuffledQuestions = shuffleList(QUESTIONS);
-      // Select first 5 items
-      this.questions = shuffledQuestions.slice(0, 5);
+      // Set value to questions
+      this.questions = shuffledQuestions.slice(0, this.totalQuestions);
     },
 
     async validateScript(data: ScriptBody): Promise<ScriptResponse> {
