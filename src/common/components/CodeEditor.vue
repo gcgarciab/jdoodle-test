@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
 import type { CodeLanguage } from '../types';
-import type { SelectOption } from '../interfaces';
+import type { SelectOption, TestCase } from '../interfaces';
 
 import { php } from '@codemirror/lang-php';
 import { Codemirror } from 'vue-codemirror';
@@ -13,11 +13,11 @@ import { javascript } from '@codemirror/lang-javascript';
 import { computed, onBeforeMount, onMounted, ref, toRefs, watch } from 'vue';
 import { DEFAULT_JAVA, DEFAULT_PHP, DEFAULT_PYTHON, DEFAULT_TYPESCRIPT } from '../constants';
 
-import webstomp from 'webstomp-client';
-import SockJS from 'sockjs-client/dist/sockjs.min.js';
+// import webstomp from 'webstomp-client';
+// import SockJS from 'sockjs-client/dist/sockjs.min.js';
 
-const socket = new SockJS(import.meta.env.VITE_WS_URL);
-const stompClient = webstomp.over(socket, { heartbeat: false, debug: true });
+// const socket = new SockJS(import.meta.env.VITE_WS_URL);
+// const stompClient = webstomp.over(socket, { heartbeat: false, debug: true });
 
 const props = defineProps({
   language: {
@@ -28,6 +28,14 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  loading: {
+    type: Boolean,
+    required: true,
+  },
+  currentAction: {
+    type: String as PropType<'test' | 'submit'>,
+    required: false,
+  }
 });
 
 const emit = defineEmits(['test', 'submit', 'update:language']);
@@ -41,7 +49,12 @@ const editorStyle = {
   fontSize: '1.15rem',
 }
 
-const languageOptions: SelectOption[] = ['java', 'php', 'python', 'typescript']
+const languageOptions: SelectOption[] = [
+    // 'java',
+    'php',
+    'python3',
+    'typescript',
+  ]
   .map((o) => ({
     label: o.toUpperCase(),
     value: o,
@@ -75,13 +88,13 @@ function resetCode(lang: CodeLanguage): void {
 watchDebounced(
   code,
   (newValue) => {
-    if (stompClient.connected) {
-      console.log('connected !!');
-      stompClient.send('/app/execute-ws-api-token', newValue, {
-        message_type: 'execute',
-        token: socketToken.value,
-      });
-    }
+    // if (stompClient.connected) {
+    //   console.log('connected !!');
+    //   stompClient.send('/app/execute-ws-api-token', newValue, {
+    //     message_type: 'execute',
+    //     token: socketToken.value,
+    //   });
+    // }
   },
   { debounce: 10000 },
 );
@@ -103,28 +116,28 @@ onBeforeMount(async () => {
   resetCode(language.value);
 });
 
-function onWsConnection() {
-  console.log('Connection succeeded');
+// function onWsConnection() {
+//   console.log('Connection succeeded');
 
-  stompClient.subscribe('/user/queue/execute-i', (message) => {
-    // Handle the received message
-    console.log('Received message:', message.body);
-    console.log('statusCode:', message.headers);
-  });
-}
+//   stompClient.subscribe('/user/queue/execute-i', (message) => {
+//     // Handle the received message
+//     console.log('Received message:', message.body);
+//     console.log('statusCode:', message.headers);
+//   });
+// }
 
-function onWsConnectionFailed(e: any) {
-  console.log(e);
-  console.log('Connection failed');
-}
+// function onWsConnectionFailed(e: any) {
+//   console.log(e);
+//   console.log('Connection failed');
+// }
 
-onMounted(() => {
-  stompClient.connect({}, onWsConnection, onWsConnectionFailed);
-});
+// onMounted(() => {
+//   stompClient.connect({}, onWsConnection, onWsConnectionFailed);
+// });
 </script>
 
 <template>
-  <div class="question-editor p-2">
+  <div class="question-editor h-screen py-2">
     <Codemirror
       v-model="code"
       :style="editorStyle"
@@ -136,7 +149,7 @@ onMounted(() => {
       class="shadow-md"
     />
 
-    <div class="question-actions py-2 flex justify-between text-white">
+    <div class="question-actions p-1.5 flex justify-between text-white">
       <div class="w-48">
         <QSelect
           filled
@@ -160,6 +173,8 @@ onMounted(() => {
           no-caps
           label="Run Code"
           class="action bg-neutral-300 text-black"
+          :disable="loading && currentAction !== 'test'"
+          :loading="loading && currentAction === 'test'"
           @click="emit('test', code)"
         />
 
@@ -167,6 +182,8 @@ onMounted(() => {
           no-caps
           label="Submit Code"
           class="action bg-green-500"
+          :disable="loading && currentAction !== 'submit'"
+          :loading="loading && currentAction === 'submit'"
           @click="emit('submit', code)"
         />
       </div>

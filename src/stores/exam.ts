@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia';
 import { shuffleList } from '@/common/utils';
 import { QUESTIONS } from '@/common/constants';
-import type { AuthCredentials, ExamState, ScriptBody } from '@/common/interfaces';
+import type { AuthCredentials, ExamState, ScriptBody, ScriptResponse } from '@/common/interfaces';
 import { requests } from '@/plugins';
 
 export const useExamStore = defineStore('exam', {
   state: (): ExamState => ({
     questions: [],
-    currentIndex: 1,
+    currentIndex: 0,
     currentLanguage: 'typescript',
     jdoodleToken: '',
   }),
@@ -18,7 +18,7 @@ export const useExamStore = defineStore('exam', {
     currentQuestion: (state) => {
       if (!state.questions.length) return null;
 
-      return state.questions[state.currentIndex - 1];
+      return state.questions[state.currentIndex];
     }
   },
 
@@ -29,13 +29,9 @@ export const useExamStore = defineStore('exam', {
       this.questions = shuffledQuestions.slice(0, 5);
     },
 
-    async validateAnswer(data: ScriptBody) {
-      const result = await requests.post('/execute', data);
-      console.log(result);
-    },
-
-    async submitQuestion(data: string) {
-
+    async validateScript(data: ScriptBody): Promise<ScriptResponse> {
+      const result: ScriptResponse = await requests.post('/execute', data);
+      return result;
     },
 
     async getJDoodleToken(credentials: AuthCredentials) {
