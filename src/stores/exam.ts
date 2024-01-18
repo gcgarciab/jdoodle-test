@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { requests } from '@/plugins';
 import { QUESTIONS } from '@/common/constants';
+import { ExamEnum } from '@/modules/exam/enums';
 import { getStoreState, shuffleList } from '@/common/utils';
 import type { ExamState, JDoodleCredentials, ScriptBody, ScriptResponse } from '@/modules/exam/interfaces';
 
@@ -10,6 +11,7 @@ const INITIAL_STATE: ExamState = {
   currentLanguage: 'typescript',
   jdoodleToken: '',
   totalQuestions: 5,
+  examType: null,
 }
 
 export const useExamStore = defineStore('exam', {
@@ -20,7 +22,9 @@ export const useExamStore = defineStore('exam', {
       if (!state.questions.length) return null;
 
       return state.questions[state.currentIndex];
-    }
+    },
+
+    isPracticeExam: (state) => state.examType === ExamEnum.PRACTICE
   },
 
   actions: {
@@ -50,14 +54,35 @@ export const useExamStore = defineStore('exam', {
      * used to connect with Websocket
      * @param {JDoodleCredentials} credentials - JDoodle credentials
      */
-    async getJDoodleToken(credentials: JDoodleCredentials) {
+    async getJDoodleToken(credentials: JDoodleCredentials): Promise<void> {
       this.jdoodleToken = await requests.post('/auth-token', credentials);
+    },
+
+    /**
+     * Set new value to 'examType'.
+     * @param {ExamEnum | null} type - Type value
+     */
+    setExamType(type: ExamEnum | null): void {
+      this.examType = type;
+    },
+
+    /**
+     * Reset all status for every testCase from questions.
+     */
+    resetQuestionsStatus(): void {
+      this.questions = this.questions.map((q) => ({
+        ...q,
+        testCases: q.testCases.map((t) => ({
+          ...t,
+          status: false,
+        }))
+      }));
     },
 
     /**
      * Force state to initial data
      */
-    reset() {
+    reset(): void {
       this.$state = { ...INITIAL_STATE };
     },
   },

@@ -1,5 +1,6 @@
 import type { CodeLanguage } from '@/modules/exam/types';
 import type { Question } from '@/modules/exam/interfaces';
+import type { ExamEnum } from '../enums';
 
 export interface ExamState {
   questions: Question[];
@@ -7,4 +8,5 @@ export interface ExamState {
   currentLanguage: CodeLanguage;
   jdoodleToken: string;
   totalQuestions: number;
+  examType: ExamEnum | null;
 }
