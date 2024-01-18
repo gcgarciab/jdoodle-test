@@ -2,6 +2,7 @@ import { ExamEnum } from '@/modules/exam/enums';
 import type { ExamState, JDoodleCredentials, ScriptBody, ScriptResponse } from '@/modules/exam/interfaces';
 
 const INITIAL_STATE: ExamState = {
+  examId: null,
   questions: [],
   currentIndex: 0,
   currentLanguage: 'typescript',
@@ -40,8 +41,12 @@ export const useExamStore = defineStore('exam', {
      * @param {ScriptBody} data - Script data
      * @returns {ScriptResponse} - JDoodle response
      */
-    async validateScript(data: ScriptBody): Promise<ScriptResponse> {
-      const result: ScriptResponse = await requests.post('/execute', data);
+    async validateScript(data: ScriptBody, output?: number): Promise<ScriptResponse> {
+      const result: ScriptResponse = await requests.post('/execute', {
+        ...data,
+        output,
+      });
+
       return result;
     },
 
@@ -60,6 +65,14 @@ export const useExamStore = defineStore('exam', {
      */
     setExamType(type: ExamEnum | null): void {
       this.examType = type;
+    },
+
+    /**
+     * Set new value to 'examType'.
+     * @param {number} type - Type value
+     */
+    setExamId(newId: number): void {
+      this.examId = newId;
     },
 
     /**

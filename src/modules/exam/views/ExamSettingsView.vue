@@ -43,12 +43,13 @@ async function startTest() {
   startLoading();
   // Wait until ready (Only for visual effects)
   if (isPracticeExam.value) await delay(2000);
+  // Set Exam ID
+  const examId = randomIntFromInterval(1, 10);
+  examStore.setExamId(examId);
 
   router.push({
     name: isPracticeExam.value ? 'ExamPractice' : 'ExamTest',
-    params: {
-      id: randomIntFromInterval(1, 10),
-    },
+    params: { id: examId },
   });
 
   stopLoading();

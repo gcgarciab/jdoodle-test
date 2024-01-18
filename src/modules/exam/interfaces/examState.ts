@@ -3,6 +3,7 @@ import type { Question } from '@/modules/exam/interfaces';
 import type { ExamEnum } from '../enums';
 
 export interface ExamState {
+  examId: number | null;
   questions: Question[];
   currentIndex: number;
   currentLanguage: CodeLanguage;

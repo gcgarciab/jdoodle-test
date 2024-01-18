@@ -26,6 +26,13 @@ export const QUESTIONS: Question[] = [
       // { input: [4, 5], output: '45' },
       // { input: [5, 6], output: '56' },
     ],
+    /**
+     *function concatValues(list: number[]) {
+        return list.join().replace(new RegExp(',', 'g'), '');
+      }
+
+      console.log(concatValues([10, 3, 4]));
+     */
   },
   {
     name: `Sum values`,

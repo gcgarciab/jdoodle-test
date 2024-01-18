@@ -5,7 +5,7 @@ import { useExamStore } from '@/stores';
 const retry = ref(false);
 const examStore = useExamStore();
 const { loading, startLoading, stopLoading } = useLoading();
-const { questions, isPracticeExam, totalQuestions } = storeToRefs(examStore);
+const { examId, questions, isPracticeExam, totalQuestions } = storeToRefs(examStore);
 
 const correctQuestions = computed(() => {
   return questions.value.filter((q) => q.testCases.every((t) => t.status)).length;
@@ -35,7 +35,10 @@ async function retryTest() {
   startLoading();
   await delay(2000);
   examStore.resetQuestionsStatus();
-  router.push({ name: 'ExamPractice' });
+  router.push({
+    name: 'ExamPractice',
+    params: { id: examId.value },
+  });
   stopLoading();
 }
 

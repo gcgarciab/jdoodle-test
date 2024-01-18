@@ -124,6 +124,12 @@
     "useAuthStore": true,
     "useExamStore": true,
     "createPinia": true,
-    "setActivePinia": true
+    "setActivePinia": true,
+    "browser": true,
+    "worker": true,
+    "handlers": true,
+    "examRequests": true,
+    "server": true,
+    "SCRIPT_RESULT": true
   }
 }

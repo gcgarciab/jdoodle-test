@@ -27,7 +27,7 @@ const examLabel = computed((): string => isPractice ? 'Practice' : 'Test');
 
 const showConsole = computed((): boolean => {
   return runningScript.value
-    || (currentExecution.value === 'submit')
+    || questionsHasBeenResolved.value
     || (executionResult.value !== undefined);
 });
 
@@ -63,11 +63,13 @@ function resetExamValues() {
  * with some delay and reset store if is leaving
  */
 async function goToRoute(name: string, leave?: boolean): Promise<void> {
-  // Start loading
-  startLoading();
-  await delay(1000);
-  if (leave) examStore.reset();
-  stopLoading();
+  if (leave) {
+    examStore.reset();
+  } else {
+    startLoading();
+    await delay(1000);
+    stopLoading();
+  }
   // Make redirect
   router.push({ name });
 
@@ -82,6 +84,7 @@ async function goToRoute(name: string, leave?: boolean): Promise<void> {
 async function testScript(script: string): Promise<void> {
   runningScript.value = true;
   currentExecution.value = 'test';
+  executionResult.value = undefined;
   const data = buildScriptBody(script);
 
   try {
@@ -95,10 +98,14 @@ async function testScript(script: string): Promise<void> {
 
 async function submitScript(script: string): Promise<void> {
   currentExecution.value = 'submit';
+  executionResult.value = undefined;
   const { testMethod } = currentQuestion.value!;
   const methodPositions: number[] = [...script.matchAll(new RegExp(testMethod, 'gi'))].map((a) => a.index!);
 
-  if (methodPositions.length <= 1) return;
+  if (methodPositions.length <= 1) {
+    showNotify('negative', 'Method name not match 🙁');
+    return;
+  };
   // Replace code values with test cases input
   const lastIndex = methodPositions[1];
   const startPosition = script.slice(lastIndex, script.length).indexOf('[');
@@ -107,7 +114,6 @@ async function submitScript(script: string): Promise<void> {
   const stringToReplace = substring.slice(startPosition + 1, endPosition);
   const question = questions.value[currentIndex.value];
   // Reset execution value
-  executionResult.value = undefined;
   runningScript.value = true;
 
   const validateTest = async (test: TestCase) => {
@@ -118,8 +124,8 @@ async function submitScript(script: string): Promise<void> {
     const replacedScript = script.replace(substring, testCaseString);
     const testBody = buildScriptBody(replacedScript);
     // Set JDoodle result
-    const result = await examStore.validateScript(testBody);
-    test.status = (+result.output === test.output);
+    const result = await examStore.validateScript(testBody, test.output);
+    test.status = (+result.output === +test.output);
     test.result = result.output;
     // Stop loading
     test.loading = false;
@@ -263,4 +269,3 @@ onBeforeMount(async () => {
   @apply text-lg text-neutral-400 my-10;
 }
 </style>
-@/modules/exam/types
