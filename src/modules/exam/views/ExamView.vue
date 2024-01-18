@@ -144,7 +144,7 @@ onBeforeMount(async () => {
 
   if (!isPractice) showCountDown.value = true;
 
-  // await examStore.getJDoodleToken(jdoodleCredentials);
+  await examStore.getJDoodleToken(jdoodleCredentials);
 });
 </script>
 
@@ -239,7 +239,7 @@ onBeforeMount(async () => {
       confirm-text="Finish"
       description="Do you want to see the results?"
       @cancel="goToRoute('Home', true)"
-      @confirm="goToRoute('Results')"
+      @confirm="goToRoute('ExamResult')"
     />
 
     <ConfirmDialog

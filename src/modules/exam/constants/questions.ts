@@ -1,4 +1,4 @@
-import type { Question } from '../../../common/interfaces';
+import type { Question } from '@/modules/exam/interfaces';
 
 export const QUESTIONS: Question[] = [
   {
@@ -108,6 +108,14 @@ export const QUESTIONS: Question[] = [
       // { input: [4, 5], output: 2 },
       // { input: [5, 6], output: 2 },
     ],
+    /**
+     *
+      function countValues(list: number[]) {
+        return list.length;
+      }
+
+      console.log(countValues([1, 2]));
+    */
   },
   {
     name: `Average values`,
