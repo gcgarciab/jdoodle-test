@@ -7,5 +7,3 @@ export const authRoutes: RouteRecordRaw[] = [
     component: () => import('@/modules/auth/views/SignInView.vue'),
   },
 ];
-
-export default authRoutes;

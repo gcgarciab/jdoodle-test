@@ -1,6 +1,3 @@
-import { useAuthStore } from '@/stores';
-import { examRoutes } from '@/modules/exam/routes';
-import { authRoutes } from '@/modules/auth/routes';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({

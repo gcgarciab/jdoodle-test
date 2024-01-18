@@ -1,15 +1,14 @@
-import { defineStore } from 'pinia';
-import { requests } from '@/plugins';
-import { QUESTIONS } from '@/common/constants';
-import { getStoreState, shuffleList } from '@/common/utils';
+import { ExamEnum } from '@/modules/exam/enums';
 import type { ExamState, JDoodleCredentials, ScriptBody, ScriptResponse } from '@/modules/exam/interfaces';
 
 const INITIAL_STATE: ExamState = {
+  examId: null,
   questions: [],
   currentIndex: 0,
   currentLanguage: 'typescript',
   jdoodleToken: '',
   totalQuestions: 5,
+  examType: null,
 }
 
 export const useExamStore = defineStore('exam', {
@@ -20,7 +19,9 @@ export const useExamStore = defineStore('exam', {
       if (!state.questions.length) return null;
 
       return state.questions[state.currentIndex];
-    }
+    },
+
+    isPracticeExam: (state) => state.examType === ExamEnum.PRACTICE
   },
 
   actions: {
@@ -40,8 +41,12 @@ export const useExamStore = defineStore('exam', {
      * @param {ScriptBody} data - Script data
      * @returns {ScriptResponse} - JDoodle response
      */
-    async validateScript(data: ScriptBody): Promise<ScriptResponse> {
-      const result: ScriptResponse = await requests.post('/execute', data);
+    async validateScript(data: ScriptBody, output?: number): Promise<ScriptResponse> {
+      const result: ScriptResponse = await requests.post('/execute', {
+        ...data,
+        output,
+      });
+
       return result;
     },
 
@@ -50,14 +55,43 @@ export const useExamStore = defineStore('exam', {
      * used to connect with Websocket
      * @param {JDoodleCredentials} credentials - JDoodle credentials
      */
-    async getJDoodleToken(credentials: JDoodleCredentials) {
+    async getJDoodleToken(credentials: JDoodleCredentials): Promise<void> {
       this.jdoodleToken = await requests.post('/auth-token', credentials);
+    },
+
+    /**
+     * Set new value to 'examType'.
+     * @param {ExamEnum | null} type - Type value
+     */
+    setExamType(type: ExamEnum | null): void {
+      this.examType = type;
+    },
+
+    /**
+     * Set new value to 'examType'.
+     * @param {number} type - Type value
+     */
+    setExamId(newId: number): void {
+      this.examId = newId;
+    },
+
+    /**
+     * Reset all status for every testCase from questions.
+     */
+    resetQuestionsStatus(): void {
+      this.questions = this.questions.map((q) => ({
+        ...q,
+        testCases: q.testCases.map((t) => ({
+          ...t,
+          status: false,
+        }))
+      }));
     },
 
     /**
      * Force state to initial data
      */
-    reset() {
+    reset(): void {
       this.$state = { ...INITIAL_STATE };
     },
   },

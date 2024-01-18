@@ -1,4 +1,4 @@
-import type { Question } from '../../../common/interfaces';
+import type { Question } from '@/modules/exam/interfaces';
 
 export const QUESTIONS: Question[] = [
   {
@@ -26,6 +26,13 @@ export const QUESTIONS: Question[] = [
       // { input: [4, 5], output: '45' },
       // { input: [5, 6], output: '56' },
     ],
+    /**
+     *function concatValues(list: number[]) {
+        return list.join().replace(new RegExp(',', 'g'), '');
+      }
+
+      console.log(concatValues([10, 3, 4]));
+     */
   },
   {
     name: `Sum values`,
@@ -108,6 +115,14 @@ export const QUESTIONS: Question[] = [
       // { input: [4, 5], output: 2 },
       // { input: [5, 6], output: 2 },
     ],
+    /**
+     *
+      function countValues(list: number[]) {
+        return list.length;
+      }
+
+      console.log(countValues([1, 2]));
+    */
   },
   {
     name: `Average values`,
@@ -120,6 +135,15 @@ export const QUESTIONS: Question[] = [
       // { input: [3, 4], output: 3.5 },
       // { input: [4, 5], output: 4.5 },
       // { input: [5, 6], output: 5.5 },
+
+      /**
+       * function averageValues(list: number[]) {
+          const sum = list.reduce((a, b) => a + b);
+          return sum / list.length;
+        }
+
+        console.log(averageValues([1, 2]));
+       */
     ],
   },
   {
@@ -164,7 +188,6 @@ export const QUESTIONS: Question[] = [
 ].map((q, index) => ({
   ...q,
   id: index + 1,
-  submitted: false,
   testCases: q.testCases.map((t) => ({
     ...t,
     loading: false,

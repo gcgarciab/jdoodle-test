@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import router from '@/router';
-import useAuthStore from '@/stores/auth';
-import { computed, reactive, ref } from 'vue';
-import { useLoading } from '@/common/composables';
+import { useAuthStore } from '@/stores';
 import type { AuthCredentials } from '@/modules/auth/interfaces';
-import { email, minLength, required } from '@vuelidate/validators';
 import { useVuelidate, type ValidationArgs } from '@vuelidate/core';
 import { checkFormKeyError, showFormKeyError } from '@/common/utils';
 

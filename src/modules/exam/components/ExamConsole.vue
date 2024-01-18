@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PropType } from 'vue';
 import type { ExamExecution } from '@/modules/exam/types';
 import type { Question, ScriptResponse } from '@/modules/exam/interfaces';
 
@@ -24,7 +23,7 @@ defineProps({
     <div class="exam-console">
       <div
         v-if="currentExecution === 'test'"
-        class="test-result"
+        class="results"
       >
         <p
           v-if="!result"
@@ -53,8 +52,8 @@ defineProps({
       </div>
 
       <div
-        v-if="currentExecution === 'submit'"
-        class="submit-result"
+        v-else
+        class="results"
       >
         <div
           v-for="(test, index) in question.testCases"
@@ -66,6 +65,7 @@ defineProps({
           >
             Running test #{{ index + 1 }} ...
           </p>
+
           <div
             v-else
             class="test pb-2"
@@ -87,7 +87,11 @@ defineProps({
 
 <style scoped>
 .exam-console {
-  @apply bg-gray-800 p-2 max-h-96 overflow-y-auto;
+  @apply max-h-96 overflow-y-auto;
+}
+
+.results {
+  @apply p-2 bg-gray-800;
 }
 
 .results .details {

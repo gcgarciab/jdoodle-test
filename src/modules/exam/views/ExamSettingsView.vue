@@ -1,17 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import router from '@/router';
-import { storeToRefs } from 'pinia';
 import { useExamStore } from '@/stores';
 import { ExamEnum } from '@/modules/exam/enums';
 import type { ExamOption } from '@/modules/exam/interfaces';
-import { delay, randomIntFromInterval } from '@/common/utils';
 
-const loading = ref(false);
 const examStore = useExamStore();
 const showOptionsDialog = ref<boolean>(false);
-const selectedOption = ref<ExamEnum | null>(null);
-const { totalQuestions } = storeToRefs(examStore);
+const { loading, startLoading, stopLoading } = useLoading();
+const { isPracticeExam, totalQuestions } = storeToRefs(examStore);
 
 const examOptions: ExamOption[] = [
   {
@@ -33,7 +29,7 @@ const examOptions: ExamOption[] = [
  * with default value.
  */
 function hideOptions() {
-  selectedOption.value = null;
+  examStore.setExamType(null);
   showOptionsDialog.value = false;
   // Reset questions value
   totalQuestions.value = 5;
@@ -44,19 +40,19 @@ function hideOptions() {
  * and redirect to expected route.
  */
 async function startTest() {
-  loading.value = true
-  const isPractice = (selectedOption.value === ExamEnum.PRACTICE);
+  startLoading();
   // Wait until ready (Only for visual effects)
-  if (isPractice) await delay(2000);
+  if (isPracticeExam.value) await delay(2000);
+  // Set Exam ID
+  const examId = randomIntFromInterval(1, 10);
+  examStore.setExamId(examId);
 
   router.push({
-    name: isPractice ? 'ExamPractice' : 'ExamTest',
-    params: {
-      id: randomIntFromInterval(1, 10),
-    },
+    name: isPracticeExam.value ? 'ExamPractice' : 'ExamTest',
+    params: { id: examId },
   });
 
-  loading.value = false;
+  stopLoading();
 }
 
 /**
@@ -70,7 +66,7 @@ function showOptions(value: ExamEnum) {
     return;
   }
 
-  selectedOption.value = value;
+  examStore.setExamType(value);
   showOptionsDialog.value = true;
 }
 </script>
@@ -107,7 +103,7 @@ function showOptions(value: ExamEnum) {
     </div>
 
     <ConfirmDialog
-      v-if="selectedOption === ExamEnum.PRACTICE"
+      v-if="isPracticeExam"
       title="Options"
       description="Please, choose number of questions."
       confirm-text="Start"

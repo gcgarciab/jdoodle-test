@@ -7,5 +7,4 @@ export interface Question {
   description: string;
   testMethod: string;
   testCases: TestCase[];
-  submitted: boolean;
 }

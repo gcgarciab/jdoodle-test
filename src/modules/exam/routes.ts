@@ -22,5 +22,3 @@ export const examRoutes: RouteRecordRaw[] = [
     component: () => import('@/modules/exam/views/ExamResultView.vue'),
   },
 ];
-
-export default examRoutes;
