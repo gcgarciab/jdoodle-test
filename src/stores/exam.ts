@@ -1,18 +1,9 @@
 import { ExamEnum } from '@/modules/exam/enums';
+import { INITIAL_EXAM_STATE } from '@/modules/exam/constants';
 import type { ExamState, JDoodleCredentials, ScriptBody, ScriptResponse } from '@/modules/exam/interfaces';
 
-const INITIAL_STATE: ExamState = {
-  examId: null,
-  questions: [],
-  currentIndex: 0,
-  currentLanguage: 'typescript',
-  jdoodleToken: '',
-  totalQuestions: 5,
-  examType: null,
-}
-
 export const useExamStore = defineStore('exam', {
-  state: (): ExamState => getStoreState('examStore', INITIAL_STATE),
+  state: (): ExamState => getStoreState('examStore', INITIAL_EXAM_STATE),
 
   getters: {
     currentQuestion: (state) => {
@@ -68,8 +59,8 @@ export const useExamStore = defineStore('exam', {
     },
 
     /**
-     * Set new value to 'examType'.
-     * @param {number} type - Type value
+     * Set new value to 'examId'.
+     * @param {number} newId - Id value
      */
     setExamId(newId: number): void {
       this.examId = newId;
@@ -92,7 +83,7 @@ export const useExamStore = defineStore('exam', {
      * Force state to initial data
      */
     reset(): void {
-      this.$state = { ...INITIAL_STATE };
+      this.$state = { ...INITIAL_EXAM_STATE };
     },
   },
 });

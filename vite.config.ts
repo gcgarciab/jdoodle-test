@@ -3,6 +3,8 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
+import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
+
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -34,7 +36,10 @@ export default defineConfig({
     vue({
       include: [/\.vue$/, /\.md$/],
       reactivityTransform: true,
+      template: { transformAssetUrls }
     }),
+
+    // quasar(),
 
     AutoImport({
       include: [
@@ -46,7 +51,6 @@ export default defineConfig({
       imports: [
         'vue',
         'vue-router',
-        // 'vitest',
         {
           pinia: [
             'createPinia',

@@ -7,10 +7,16 @@
 export function useLoading() {
   const loading = ref<boolean>(false);
 
+  /**
+   * Set 'loading' value to true.
+   */
   function startLoading() {
     loading.value = true;
   }
 
+  /**
+   * Set 'loading' value to false.
+   */
   function stopLoading() {
     loading.value = false;
   }
