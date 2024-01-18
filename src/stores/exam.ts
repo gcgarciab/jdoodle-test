@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { requests } from '@/plugins';
 import { QUESTIONS } from '@/common/constants';
 import { getStoreState, shuffleList } from '@/common/utils';
-import type { AuthCredentials, ExamState, ScriptBody, ScriptResponse } from '@/common/interfaces';
+import type { ExamState, JDoodleCredentials, ScriptBody, ScriptResponse } from '@/modules/exam/interfaces';
 
 const INITIAL_STATE: ExamState = {
   questions: [],
@@ -16,8 +16,6 @@ export const useExamStore = defineStore('exam', {
   state: (): ExamState => getStoreState('examStore', INITIAL_STATE),
 
   getters: {
-    examProgress: (state) => state.currentIndex / state.questions.length,
-
     currentQuestion: (state) => {
       if (!state.questions.length) return null;
 
@@ -26,20 +24,41 @@ export const useExamStore = defineStore('exam', {
   },
 
   actions: {
+    /**
+     * Choose randomly from QUESTION 'totalQuestions'
+     * value and set the result to 'questions'.
+     */
     selectQuestions() {
       const shuffledQuestions = shuffleList(QUESTIONS);
       // Set value to questions
       this.questions = shuffledQuestions.slice(0, this.totalQuestions);
     },
 
+    /**
+     * Make POST request to API to execute an script
+     * and return its result.
+     * @param {ScriptBody} data - Script data
+     * @returns {ScriptResponse} - JDoodle response
+     */
     async validateScript(data: ScriptBody): Promise<ScriptResponse> {
       const result: ScriptResponse = await requests.post('/execute', data);
       return result;
     },
 
-    async getJDoodleToken(credentials: AuthCredentials) {
+    /**
+     * Make POST request to API to get user token to be
+     * used to connect with Websocket
+     * @param {JDoodleCredentials} credentials - JDoodle credentials
+     */
+    async getJDoodleToken(credentials: JDoodleCredentials) {
       this.jdoodleToken = await requests.post('/auth-token', credentials);
-      console.log('token', this.jdoodleToken);
+    },
+
+    /**
+     * Force state to initial data
+     */
+    reset() {
+      this.$state = { ...INITIAL_STATE };
     },
   },
 });

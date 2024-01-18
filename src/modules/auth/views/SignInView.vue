@@ -1,21 +1,23 @@
 <script setup lang="ts">
 import router from '@/router';
 import useAuthStore from '@/stores/auth';
-import { computed, reactive, ref, watch } from 'vue';
-import { useVuelidate } from '@vuelidate/core';
-import type { AuthCredentials } from '@/common/interfaces';
-import { email, minLength, required,  } from '@vuelidate/validators'
+import { computed, reactive, ref } from 'vue';
+import { useLoading } from '@/common/composables';
+import type { AuthCredentials } from '@/modules/auth/interfaces';
+import { email, minLength, required } from '@vuelidate/validators';
+import { useVuelidate, type ValidationArgs } from '@vuelidate/core';
 import { checkFormKeyError, showFormKeyError } from '@/common/utils';
 
-const loading = ref(false);
-const showPassword = ref(false);
 const authStore = useAuthStore();
+const showPassword = ref<boolean>(false);
+const { loading, startLoading, stopLoading } = useLoading();
+
 const authForm = reactive<AuthCredentials>({
   email: '',
   password: '',
 });
 
-const rules = computed(() => ({
+const rules = computed((): ValidationArgs => ({
   email: { required, email },
   password: {
     required,
@@ -25,38 +27,40 @@ const rules = computed(() => ({
 
 const v$ = useVuelidate(rules, authForm);
 
-async function signin() {
+/**
+ * Check if form values are valid and calls
+ * 'signIn' action with loading state.
+ */
+async function signIn() {
   if (v$.value.$invalid) {
-    console.log('invalid');
     v$.value.$touch();
     return;
   }
 
-  loading.value = true;
-
   try {
+    startLoading();
     await authStore.signIn(authForm);
     // Go to Home view
-    await router.push({ name: 'Home' });
+    router.push({ name: 'Home' });
   } catch(error) {
     console.log(error);
   } finally {
-    loading.value = false;
+    stopLoading();
   }
 }
 </script>
 
 <template>
   <form
-    class="signin h-screen flex items-center justify-center bg-gray-200"
-    @submit.prevent="signin()"
+    class="sign-in"
+    @submit.prevent="signIn()"
   >
     <QCard
-      class="w-1/3 shadow-2 mx-auto bg-gray-500 py-8"
+      class="form-wrapper"
       bordered
     >
       <QCardSection class="text-center">
-        <div class="text-neutral-100 text-h5 text-weight-bold">Sign in to JDoodle Test</div>
+        <div class="form-title">Sign in to JDoodle Test</div>
         <div class="text-neutral-300">Sign in below to access your account</div>
       </QCardSection>
 
@@ -103,7 +107,7 @@ async function signin() {
           :loading="loading"
         >
           <template v-slot:loading>
-            <QSpinnerFacebook />
+            <QSpinner />
           </template>
         </QBtn>
       </QCardSection>
@@ -112,5 +116,15 @@ async function signin() {
 </template>
 
 <style scoped>
+.sign-in {
+  @apply h-screen flex items-center justify-center bg-gray-200;
+}
 
+.form-wrapper {
+  @apply w-1/3 shadow-md mx-auto bg-gray-500 py-8;
+}
+
+.form-title {
+  @apply text-neutral-100 text-2xl font-bold;
+}
 </style>

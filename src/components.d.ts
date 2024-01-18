@@ -7,16 +7,17 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    CodeEditor: typeof import('./common/components/CodeEditor.vue')['default']
     ConfirmDialog: typeof import('./common/components/ConfirmDialog.vue')['default']
-    CountDown: typeof import('./common/components/CountDown.vue')['default']
     DefaultDialog: typeof import('./common/components/DefaultDialog.vue')['default']
-    ExamResultView: typeof import('./views/ExamResultView.vue')['default']
-    ExamSettingsView: typeof import('./views/ExamSettingsView.vue')['default']
-    ExamView: typeof import('./views/ExamView.vue')['default']
+    ExamConsole: typeof import('./modules/exam/components/ExamConsole.vue')['default']
+    ExamCountDown: typeof import('./modules/exam/components/ExamCountDown.vue')['default']
+    ExamEditor: typeof import('./modules/exam/components/ExamEditor.vue')['default']
+    ExamResultView: typeof import('./modules/exam/views/ExamResultView.vue')['default']
+    ExamSettingsView: typeof import('./modules/exam/views/ExamSettingsView.vue')['default']
+    ExamView: typeof import('./modules/exam/views/ExamView.vue')['default']
     HomeView: typeof import('./views/HomeView.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SignInView: typeof import('./views/SignInView.vue')['default']
+    SignInView: typeof import('./modules/auth/views/SignInView.vue')['default']
   }
 }

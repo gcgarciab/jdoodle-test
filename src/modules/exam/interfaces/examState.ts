@@ -1,5 +1,5 @@
-import type { CodeLanguage } from '@/common/types';
-import type { Question } from '@/common/interfaces';
+import type { CodeLanguage } from '@/modules/exam/types';
+import type { Question } from '@/modules/exam/interfaces';
 
 export interface ExamState {
   questions: Question[];

@@ -1,4 +1,4 @@
-import type { Question } from '../interfaces';
+import type { Question } from '../../../common/interfaces';
 
 export const QUESTIONS: Question[] = [
   {

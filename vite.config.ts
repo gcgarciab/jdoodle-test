@@ -41,6 +41,7 @@ export default defineConfig({
     Components({
       dirs: [
         'src/common/components',
+        'src/modules',
         'src/views',
       ],
       dts: 'src/components.d.ts',

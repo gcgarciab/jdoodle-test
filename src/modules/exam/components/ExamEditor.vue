@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
-import type { CodeLanguage } from '../types';
-import type { SelectOption, TestCase } from '../interfaces';
+import type { CodeLanguage } from '@/modules/exam/types';
+import type { SelectOption } from '@/common/interfaces';
+// import type { TestCase } from '@/modules/exam/interfaces';
 
 import { php } from '@codemirror/lang-php';
 import { Codemirror } from 'vue-codemirror';
@@ -11,7 +12,7 @@ import { python } from '@codemirror/lang-python';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { javascript } from '@codemirror/lang-javascript';
 import { computed, onBeforeMount, onMounted, ref, toRefs, watch } from 'vue';
-import { DEFAULT_JAVA, DEFAULT_PHP, DEFAULT_PYTHON, DEFAULT_TYPESCRIPT } from '../constants';
+import { DEFAULT_JAVA, DEFAULT_PHP, DEFAULT_PYTHON, DEFAULT_TYPESCRIPT } from '@/common/constants';
 
 // import webstomp from 'webstomp-client';
 // import SockJS from 'sockjs-client/dist/sockjs.min.js';
@@ -196,3 +197,4 @@ onBeforeMount(async () => {
   @apply font-semibold ml-4 px-5;
 }
 </style>
+@/modules/exam/types

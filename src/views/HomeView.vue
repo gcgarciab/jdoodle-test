@@ -22,8 +22,6 @@ async function signOut() {
 watch(
   [authStore.$state, examStore.$state],
   ([newAuthState, newExamState]) => {
-    // console.log('auth', newAuthState);
-    // console.log('exam', newExamState);
     // Persist the whole state to the local storage whenever it changes
     localStorage.setItem('authStore', JSON.stringify(newAuthState));
     localStorage.setItem('examStore', JSON.stringify(newExamState));
@@ -34,7 +32,7 @@ watch(
 
 <template>
   <section class="home">
-    <div class="header-top h-16 bg-gray-600 pl-10 flex justify-between items-center">
+    <div class="header-top">
       <QImg
         :src="logo"
         fit="cover"
@@ -63,7 +61,7 @@ watch(
           >
             <QItem
               clickable
-              class="bg-gray-500 text-neutral-100 flex items-center"
+              class="menu-item"
               @click="signOut()"
             >
               <QIcon
@@ -83,5 +81,11 @@ watch(
 </template>
 
 <style scoped>
+.header-top {
+  @apply h-16 bg-gray-600 pl-10 flex justify-between items-center;
+}
 
+.menu-item {
+  @apply bg-gray-500 text-neutral-100 flex items-center;
+}
 </style>

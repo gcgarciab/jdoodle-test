@@ -1,4 +1,4 @@
-import type { ExamEnum } from '../enums';
+import type { ExamEnum } from '@/modules/exam/enums';
 
 export interface ExamOption {
   icon: string;

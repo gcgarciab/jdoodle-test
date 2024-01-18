@@ -3,8 +3,8 @@ import { ref } from 'vue';
 import router from '@/router';
 import { storeToRefs } from 'pinia';
 import { useExamStore } from '@/stores';
-import { ExamEnum } from '@/common/enums';
-import type { ExamOption } from '@/common/interfaces';
+import { ExamEnum } from '@/modules/exam/enums';
+import type { ExamOption } from '@/modules/exam/interfaces';
 import { delay, randomIntFromInterval } from '@/common/utils';
 
 const loading = ref(false);
@@ -28,11 +28,10 @@ const examOptions: ExamOption[] = [
   },
 ];
 
-function showOptions(value: ExamEnum) {
-  selectedOption.value = value;
-  showOptionsDialog.value = true;
-}
-
+/**
+ * Hide Options Dialog and reset 'totalQuestions'
+ * with default value.
+ */
 function hideOptions() {
   selectedOption.value = null;
   showOptionsDialog.value = false;
@@ -40,13 +39,17 @@ function hideOptions() {
   totalQuestions.value = 5;
 }
 
+/**
+ * Check if 'selectedOption' is TEST or PRACTICE
+ * and redirect to expected route.
+ */
 async function startTest() {
   loading.value = true
   const isPractice = (selectedOption.value === ExamEnum.PRACTICE);
   // Wait until ready (Only for visual effects)
-  await delay(2000);
+  if (isPractice) await delay(2000);
 
-  await router.push({
+  router.push({
     name: isPractice ? 'ExamPractice' : 'ExamTest',
     params: {
       id: randomIntFromInterval(1, 10),
@@ -55,20 +58,35 @@ async function startTest() {
 
   loading.value = false;
 }
+
+/**
+ * Set value to 'selectedOption' and show options
+ * dialog if value is 'PRACTICE'.
+ * @param {ExamEnum} value - Exam type
+ */
+function showOptions(value: ExamEnum) {
+  if (value === ExamEnum.TEST) {
+    startTest();
+    return;
+  }
+
+  selectedOption.value = value;
+  showOptionsDialog.value = true;
+}
 </script>
 
 <template>
-  <section class="exam-settings bg-gray-500 h-[calc(100vh-64px)] p-10 text-neutral-100">
-    <h1 class="title text-3xl text-center my-10">Welcome to JDoodle!</h1>
+  <section class="exam-settings">
+    <h1 class="title">Welcome to JDoodle!</h1>
 
-    <div class="exam-options grid grid-cols-2 gap-20 px-60 mt-20">
+    <div class="exam-options">
       <QItem
         clickable
         v-for="(option, index) in examOptions"
         :key="option.icon"
         @click="showOptions(option.value)"
         :class="{ '!bg-gray-600': index % 2 === 0 }"
-        class="flex flex-col bg-green-400 hover:bg-green-400/80 justify-center items-center py-10"
+        class="exam-option"
       >
         <QItemSection>
           <QIcon
@@ -98,7 +116,7 @@ async function startTest() {
       @cancel="hideOptions()"
       @confirm="startTest()"
     >
-      <div class="slider-content text-center pt-6 pb-3">
+      <div class="slider-content">
         <QSlider
           v-model="totalQuestions"
           markers
@@ -114,5 +132,24 @@ async function startTest() {
 </template>
 
 <style scoped>
+.exam-settings {
+  @apply bg-gray-500 h-[calc(100vh-64px)] p-10 text-neutral-100;
+}
 
+.title {
+  @apply text-3xl text-center my-10;
+}
+
+.exam-options {
+  @apply grid grid-cols-2 gap-20 px-60 mt-20;
+}
+
+.exam-option {
+  @apply flex flex-col bg-green-400 hover:bg-green-400/80 justify-center items-center py-10;
+}
+
+.slider-content {
+  @apply text-center pt-6 pb-3;
+}
 </style>
+@/modules/exam/enums

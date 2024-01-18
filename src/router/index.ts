@@ -1,4 +1,6 @@
 import { useAuthStore } from '@/stores';
+import { examRoutes } from '@/modules/exam/routes';
+import { authRoutes } from '@/modules/auth/routes';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
@@ -10,34 +12,9 @@ const router = createRouter({
       meta: { requiresAuth: true },
       redirect: { name: 'ExamSettings' },
       component: () => import('@/views/HomeView.vue'),
-      children: [
-        {
-          path: 'exam-settings',
-          name: 'ExamSettings',
-          component: () => import('@/views/ExamSettingsView.vue'),
-        },
-        {
-          path: 'practice/:id',
-          name: 'ExamPractice',
-          component: () => import('@/views/ExamView.vue'),
-        },
-        {
-          path: 'exam/:id',
-          name: 'ExamTest',
-          component: () => import('@/views/ExamView.vue'),
-        },
-        {
-          path: 'exam-result',
-          name: 'ExamResult',
-          component: () => import('@/views/ExamResultView.vue'),
-        },
-      ],
+      children: [...examRoutes],
     },
-    {
-      path: '/sign-in',
-      name: 'SignIn',
-      component: () => import('@/views/SignInView.vue'),
-    },
+    ...authRoutes
   ]
 });
 

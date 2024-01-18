@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
+import { useExamStore } from '@/stores/exam';
 import { delay, getStoreState } from '@/common/utils';
-import type { AuthCredentials, AuthResponse, AuthState } from '@/common/interfaces';
+import type { AuthCredentials, AuthResponse, AuthState } from '@/modules/auth/interfaces';
 
 const INITIAL_STATE: AuthState = {
   currentUser: '',
@@ -43,11 +44,21 @@ export const useAuthStore = defineStore('auth', {
     },
 
     /**
+     * Force state to initial data
+     */
+    reset() {
+      this.$state = { ...INITIAL_STATE };
+    },
+
+    /**
      * Calls '$reset' method to clear store and
      * clear localStorage values.
      */
-    async signOut(): Promise<void> {
-      this.$reset();
+    signOut(): void {
+      const examStore = useExamStore();
+      // Clear stores
+      this.reset();
+      examStore.reset();
       localStorage.clear();
     },
   },
