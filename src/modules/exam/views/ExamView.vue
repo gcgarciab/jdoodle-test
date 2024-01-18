@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import router from '@/router';
-import { storeToRefs } from 'pinia';
-import { useRoute } from 'vue-router';
-import { delay } from '@/common/utils';
 import { useExamStore } from '@/stores';
-import { useLoading } from '@/common/composables';
 import type { ExamExecution } from '@/modules/exam/types';
-import { computed, onBeforeMount, ref, watch } from 'vue';
 import type { JDoodleCredentials, ScriptBody, ScriptResponse, TestCase } from '@/modules/exam/interfaces';
 
 const route = useRoute();

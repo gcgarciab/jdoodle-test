@@ -1,8 +1,4 @@
-import { defineStore } from 'pinia';
-import { requests } from '@/plugins';
-import { QUESTIONS } from '@/common/constants';
 import { ExamEnum } from '@/modules/exam/enums';
-import { getStoreState, shuffleList } from '@/common/utils';
 import type { ExamState, JDoodleCredentials, ScriptBody, ScriptResponse } from '@/modules/exam/interfaces';
 
 const INITIAL_STATE: ExamState = {

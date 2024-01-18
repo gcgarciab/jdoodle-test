@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { reactive, onBeforeUnmount, onMounted, ref, toRefs, watch } from 'vue';
-
 const props = defineProps({
   stop: {
     type: Boolean,
@@ -10,7 +8,7 @@ const props = defineProps({
 
 const emit = defineEmits(['finish'])
 
-const interval = ref<number>();
+const interval = ref();
 const countdown = reactive({
   totalSeconds: 600,
   hours: 0,

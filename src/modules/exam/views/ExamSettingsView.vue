@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import router from '@/router';
-import { storeToRefs } from 'pinia';
 import { useExamStore } from '@/stores';
 import { ExamEnum } from '@/modules/exam/enums';
-import { useLoading } from '@/common/composables';
 import type { ExamOption } from '@/modules/exam/interfaces';
-import { delay, randomIntFromInterval } from '@/common/utils';
 
 const examStore = useExamStore();
 const showOptionsDialog = ref<boolean>(false);

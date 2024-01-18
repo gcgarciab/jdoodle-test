@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import router from '@/router';
-import { storeToRefs } from 'pinia';
 import { useExamStore } from '@/stores';
-import { computed, onMounted } from 'vue';
-import { useLoading } from '@/common/composables';
-import { delay, showNotify } from '@/common/utils';
 
+const retry = ref(false);
 const examStore = useExamStore();
 const { loading, startLoading, stopLoading } = useLoading();
 const { questions, isPracticeExam, totalQuestions } = storeToRefs(examStore);
@@ -33,7 +30,8 @@ async function goToHome() {
  * clear question cases results and
  * redirect to ExamPractice view.
  */
-async function retry() {
+async function retryTest() {
+  retry.value = true;
   startLoading();
   await delay(2000);
   examStore.resetQuestionsStatus();
@@ -86,8 +84,8 @@ onMounted(() => {
           icon="mdi-refresh"
           class="action"
           color="primary"
-          :loading="loading"
-          @click="retry()"
+          :loading="loading && retry"
+          @click="retryTest()"
         />
 
         <QBtn
@@ -95,7 +93,7 @@ onMounted(() => {
           icon="mdi-home"
           class="action"
           color="green-13"
-          :loading="loading"
+          :loading="loading && !retry"
           @click="goToHome()"
         />
       </QCardActions>

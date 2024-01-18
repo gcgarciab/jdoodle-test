@@ -1,6 +1,3 @@
-import { defineStore } from 'pinia';
-import { useExamStore } from '@/stores/exam';
-import { delay, getStoreState } from '@/common/utils';
 import type { AuthCredentials, AuthResponse, AuthState } from '@/modules/auth/interfaces';
 
 const INITIAL_STATE: AuthState = {

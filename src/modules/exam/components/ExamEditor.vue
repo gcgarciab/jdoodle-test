@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PropType } from 'vue';
 import type { CodeLanguage } from '@/modules/exam/types';
 import type { SelectOption } from '@/common/interfaces';
 
@@ -10,7 +9,6 @@ import { watchDebounced } from '@vueuse/core';
 import { python } from '@codemirror/lang-python';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { javascript } from '@codemirror/lang-javascript';
-import { computed, onBeforeMount, onMounted, ref, toRefs, watch } from 'vue';
 import { DEFAULT_JAVA, DEFAULT_PHP, DEFAULT_PYTHON, DEFAULT_TYPESCRIPT } from '@/common/constants';
 
 import webstomp from 'webstomp-client';

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PropType } from 'vue';
 import type { ExamExecution } from '@/modules/exam/types';
 import type { Question, ScriptResponse } from '@/modules/exam/interfaces';
 
