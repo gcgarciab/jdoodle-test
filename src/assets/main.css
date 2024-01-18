@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.text-negative,
+.text-negative.q-icon,
+.q-field__messages [role=alert] {
+  @apply !text-red-400;
+}

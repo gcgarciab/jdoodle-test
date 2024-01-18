@@ -1,4 +1,4 @@
-export interface AuthCredentials {
+export interface JDoodleCredentials {
   clientId: string;
   clientSecret: string;
 }
