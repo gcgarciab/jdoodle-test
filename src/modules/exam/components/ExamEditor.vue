@@ -9,7 +9,7 @@ import { watchDebounced } from '@vueuse/core';
 import { python } from '@codemirror/lang-python';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { javascript } from '@codemirror/lang-javascript';
-import { DEFAULT_JAVA, DEFAULT_PHP, DEFAULT_PYTHON, DEFAULT_TYPESCRIPT } from '@/common/constants';
+import { DEFAULT_JAVA, DEFAULT_PHP, DEFAULT_PYTHON, DEFAULT_TYPESCRIPT } from '@/modules/exam/constants';
 
 import webstomp from 'webstomp-client';
 import SockJS from 'sockjs-client/dist/sockjs.min.js';

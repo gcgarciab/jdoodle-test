@@ -32,6 +32,8 @@ const showConsole = computed((): boolean => {
 });
 
 const questionsHasBeenResolved = computed((): boolean => {
+  if (questions.value.length < 1) return false;
+
   return questions.value.every((q) => q.testCases.every((t) => t.status));
 })
 
@@ -138,7 +140,7 @@ async function submitScript(script: string): Promise<void> {
 watch(currentIndex, () => resetExamValues());
 watch(questionsHasBeenResolved, () => stopCountDown.value = true);
 
-onBeforeMount(async () => {
+async function beforeMount() {
   if (questions.value.length !== totalQuestions.value) {
     examStore.selectQuestions();
   }
@@ -146,7 +148,9 @@ onBeforeMount(async () => {
   if (!isPractice) showCountDown.value = true;
 
   await examStore.getJDoodleToken(jdoodleCredentials);
-});
+}
+
+onBeforeMount(async () => beforeMount());
 </script>
 
 <template>

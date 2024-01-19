@@ -8,10 +8,12 @@ const { loading, startLoading, stopLoading } = useLoading();
 const { examId, questions, isPracticeExam, totalQuestions } = storeToRefs(examStore);
 
 const correctQuestions = computed(() => {
+  if (!questions.value) return 0;
+
   return questions.value.filter((q) => q.testCases.every((t) => t.status)).length;
 });
 
-const wrongQuestions = computed(() => totalQuestions.value - correctQuestions.value);
+const wrongQuestions = computed(() => totalQuestions?.value - correctQuestions.value);
 
 /**
  * Calls 'reset' action and redirect

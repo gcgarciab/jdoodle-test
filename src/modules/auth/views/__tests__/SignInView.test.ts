@@ -1,7 +1,7 @@
-import { afterEach, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
-import SignInView from '@/modules/auth/views/SignInView.vue';
-import { shallowMount } from '@vue/test-utils';
 import router from '@/router';
+import { shallowMount } from '@vue/test-utils';
+import SignInView from '@/modules/auth/views/SignInView.vue';
+import { afterEach, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
 
 vi.mock('@/common/composables', () => ({
   useLoading: () => ({

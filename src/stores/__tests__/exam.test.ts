@@ -2,7 +2,10 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { INITIAL_EXAM_STATE, FAKE_JDOODLE_CREDENTIALS } from '@/modules/exam/constants';
 
 describe('Exam store', () => {
+  const examStore = useExamStore();
+
   beforeEach(() => {
+    examStore.reset();
     setActivePinia(createPinia());
   });
 
@@ -12,7 +15,6 @@ describe('Exam store', () => {
 
   describe('Getters', () => {
     test('currentQuestion', () => {
-      const examStore = useExamStore();
       expect(examStore.currentQuestion).toBeNull();
       // Update questions
       examStore.selectQuestions();
@@ -21,7 +23,6 @@ describe('Exam store', () => {
     });
 
     test('isPracticeExam', () => {
-      const examStore = useExamStore();
       expect(examStore.isPracticeExam).toBeFalsy();
       // Update examType
       examStore.setExamType(ExamEnum.PRACTICE);
@@ -31,14 +32,12 @@ describe('Exam store', () => {
 
   describe('Actions', () => {
     test('selectQuestions', () => {
-      const examStore = useExamStore();
       expect(examStore.questions.length).toBe(0);
       examStore.selectQuestions();
       expect(examStore.questions.length).toBe(5);
     });
 
     test('validateScript', async () => {
-      const examStore = useExamStore();
       const data = {
         clientId: "id",
         clientSecret: "secret",
@@ -52,28 +51,24 @@ describe('Exam store', () => {
     });
 
     test('getJDoodleToken', async () => {
-      const examStore = useExamStore();
       expect(examStore.jdoodleToken).toBe('');
       await examStore.getJDoodleToken(FAKE_JDOODLE_CREDENTIALS);
       expect(examStore.jdoodleToken).toBe('fakeToken');
     });
 
     test('setExamType', () => {
-      const examStore = useExamStore();
       expect(examStore.examType).toBeNull();
       examStore.setExamType(ExamEnum.TEST);
       expect(examStore.examType).toBe(ExamEnum.TEST);
     });
 
     test('setExamId', () => {
-      const examStore = useExamStore();
       expect(examStore.examId).toBeNull();
       examStore.setExamId(12);
       expect(examStore.examId).toBe(12);
     });
 
     test('resetQuestionsStatus', async () => {
-      const examStore = useExamStore();
       // Update Question Status
       examStore.selectQuestions();
       const [firstQuestion] = examStore.questions;
@@ -86,7 +81,6 @@ describe('Exam store', () => {
     });
 
     test('reset', () => {
-      const examStore = useExamStore();
       examStore.setExamId(10);
       expect(examStore.examId).toBe(10);
       // Call reset
