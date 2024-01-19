@@ -9,9 +9,9 @@ export const QUESTIONS: Question[] = [
     testCases: [
       { input: [1, 2], output: [1, 2] },
       { input: [2, 3], output: [2, 3] },
-      // { input: [3, 4], output: [3, 4] },
-      // { input: [4, 5], output: [4, 5] },
-      // { input: [5, 6], output: [5, 6] },
+      { input: [3, 4], output: [3, 4] },
+      { input: [4, 5], output: [4, 5] },
+      { input: [5, 6], output: [5, 6] },
     ],
   },
   {
@@ -22,9 +22,9 @@ export const QUESTIONS: Question[] = [
     testCases: [
       { input: [1, 2], output: '12' },
       { input: [2, 3], output: '23' },
-      // { input: [3, 4], output: '34' },
-      // { input: [4, 5], output: '45' },
-      // { input: [5, 6], output: '56' },
+      { input: [3, 4], output: '34' },
+      { input: [4, 5], output: '45' },
+      { input: [5, 6], output: '56' },
     ],
     /**
      *function concatValues(list: number[]) {
@@ -42,9 +42,9 @@ export const QUESTIONS: Question[] = [
     testCases: [
       { input: [1, 2], output: 3 },
       { input: [2, 3], output: 5 },
-      // { input: [3, 4], output: 7 },
-      // { input: [4, 5], output: 9 },
-      // { input: [5, 6], output: 11 },
+      { input: [3, 4], output: 7 },
+      { input: [4, 5], output: 9 },
+      { input: [5, 6], output: 11 },
     ],
     /**
      *
@@ -71,7 +71,7 @@ export const QUESTIONS: Question[] = [
       { input: [2, 3], output: -1 },
       { input: [3, 4], output: -1 },
       { input: [4, 5], output: -1 },
-      // { input: [5, 6], output: -1 },
+      { input: [5, 6], output: -1 },
     ],
     /**
      *
@@ -90,9 +90,9 @@ export const QUESTIONS: Question[] = [
     testCases: [
       { input: [1, 2], output: 2 },
       { input: [2, 3], output: 6 },
-      // { input: [3, 4], output: 12 },
-      // { input: [4, 5], output: 20 },
-      // { input: [5, 6], output: 30 },
+      { input: [3, 4], output: 12 },
+      { input: [4, 5], output: 20 },
+      { input: [5, 6], output: 30 },
     ],
     /**
      *
@@ -111,9 +111,9 @@ export const QUESTIONS: Question[] = [
     testCases: [
       { input: [1, 2], output: 2 },
       { input: [2, 3], output: 2 },
-      // { input: [3, 4], output: 2 },
-      // { input: [4, 5], output: 2 },
-      // { input: [5, 6], output: 2 },
+      { input: [3, 4], output: 2 },
+      { input: [4, 5], output: 2 },
+      { input: [5, 6], output: 2 },
     ],
     /**
      *
@@ -132,9 +132,9 @@ export const QUESTIONS: Question[] = [
     testCases: [
       { input: [1, 2], output: 1.5 },
       { input: [2, 3], output: 2.5 },
-      // { input: [3, 4], output: 3.5 },
-      // { input: [4, 5], output: 4.5 },
-      // { input: [5, 6], output: 5.5 },
+      { input: [3, 4], output: 3.5 },
+      { input: [4, 5], output: 4.5 },
+      { input: [5, 6], output: 5.5 },
 
       /**
        * function averageValues(list: number[]) {
@@ -154,9 +154,9 @@ export const QUESTIONS: Question[] = [
     testCases: [
       { input: [1, 2], output: 2 },
       { input: [2, 3], output: 3 },
-      // { input: [3, 4], output: 4 },
-      // { input: [4, 5], output: 5 },
-      // { input: [5, 6], output: 6 },
+      { input: [3, 4], output: 4 },
+      { input: [4, 5], output: 5 },
+      { input: [5, 6], output: 6 },
     ],
   },
   {
@@ -167,9 +167,9 @@ export const QUESTIONS: Question[] = [
     testCases: [
       { input: [1, 2], output: 1 },
       { input: [2, 3], output: 2 },
-      // { input: [3, 4], output: 3 },
-      // { input: [4, 5], output: 4 },
-      // { input: [5, 6], output: 5 },
+      { input: [3, 4], output: 3 },
+      { input: [4, 5], output: 4 },
+      { input: [5, 6], output: 5 },
     ],
   },
   {
@@ -180,9 +180,9 @@ export const QUESTIONS: Question[] = [
     testCases: [
       { input: [1, 2], output: 2 },
       { input: [2, 3, 2], output: 2 },
-      // { input: [3, 4, 5, 4], output: 4 },
-      // { input: [4, 5, 5, 5], output: 5 },
-      // { input: [5, 6], output: 6 },
+      { input: [3, 4, 5, 4], output: 4 },
+      { input: [4, 5, 5, 5], output: 5 },
+      { input: [5, 6], output: 6 },
     ],
   },
 ].map((q, index) => ({
