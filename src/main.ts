@@ -11,14 +11,21 @@ import router from './router';
 import { QuasarOptions } from './plugins';
 
 // To start mock server
-if (import.meta.env.VITE_NODE_ENV === 'development.local') {
-  await worker.start({ onUnhandledRequest: 'bypass' });
+async function prepareApp() {
+  if (import.meta.env.VITE_NODE_ENV === 'development.local') {
+    const { worker } = await import('./mocks/browser');
+    worker.start({ onUnhandledRequest: 'bypass' });
+  }
+
+  return Promise.resolve();
 }
 
 const app = createApp(App);
 
-app.use(createPinia());
-app.use(router);
-app.use(Quasar, QuasarOptions);
+prepareApp().then(() => {
+  app.use(createPinia());
+  app.use(router);
+  app.use(Quasar, QuasarOptions);
+  app.mount('#app');
+});
 
-app.mount('#app');

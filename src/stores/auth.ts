@@ -1,13 +1,8 @@
+import { FAKE_TOKENS, INITIAL_AUTH_STATE } from '@/modules/auth/constants';
 import type { AuthCredentials, AuthResponse, AuthState } from '@/modules/auth/interfaces';
 
-const INITIAL_STATE: AuthState = {
-  currentUser: '',
-  accessToken: '',
-  refreshToken:  '',
-};
-
 export const useAuthStore = defineStore('auth', {
-  state: (): AuthState => getStoreState('authStore', INITIAL_STATE),
+  state: (): AuthState => getStoreState('authStore', INITIAL_AUTH_STATE),
 
   actions: {
     /**
@@ -17,13 +12,8 @@ export const useAuthStore = defineStore('auth', {
      * @param {AuthCredentials} credentials - User credentials
      */
     async signIn(credentials: AuthCredentials) {
-      // const result = await requests.post('/sigin', credentials);
       await delay(1500);
-      const result = {
-        accessToken: 'adasdasdasdasd',
-        refreshToken: 'adasdasdasdasd',
-      };
-
+      const result = { ...FAKE_TOKENS };
       this.currentUser = credentials.email;
       this.setTokens(result);
     },
@@ -44,7 +34,7 @@ export const useAuthStore = defineStore('auth', {
      * Force state to initial data
      */
     reset() {
-      this.$state = { ...INITIAL_STATE };
+      this.$state = { ...INITIAL_AUTH_STATE };
     },
 
     /**
