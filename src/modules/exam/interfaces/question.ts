@@ -5,6 +5,6 @@ export interface Question {
   name: string;
   example: string;
   description: string;
+  testMethod: string;
   testCases: TestCase[];
-  submitted: boolean;
 }

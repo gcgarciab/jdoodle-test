@@ -1,46 +1,89 @@
-import { defineStore } from 'pinia';
-import { shuffleList } from '@/common/utils';
-import { QUESTIONS } from '@/common/constants';
-import type { AuthCredentials, ExamState, ScriptBody } from '@/common/interfaces';
-import { requests } from '@/plugins';
+import { ExamEnum } from '@/modules/exam/enums';
+import { INITIAL_EXAM_STATE } from '@/modules/exam/constants';
+import type { ExamState, JDoodleCredentials, ScriptBody, ScriptResponse } from '@/modules/exam/interfaces';
 
 export const useExamStore = defineStore('exam', {
-  state: (): ExamState => ({
-    questions: [],
-    currentIndex: 1,
-    currentLanguage: 'typescript',
-    jdoodleToken: '',
-  }),
+  state: (): ExamState => getStoreState('examStore', INITIAL_EXAM_STATE),
 
   getters: {
-    examProgress: (state) => state.currentIndex / state.questions.length,
-
     currentQuestion: (state) => {
       if (!state.questions.length) return null;
 
-      return state.questions[state.currentIndex - 1];
-    }
+      return state.questions[state.currentIndex];
+    },
+
+    isPracticeExam: (state) => state.examType === ExamEnum.PRACTICE
   },
 
   actions: {
+    /**
+     * Choose randomly from QUESTION 'totalQuestions'
+     * value and set the result to 'questions'.
+     */
     selectQuestions() {
       const shuffledQuestions = shuffleList(QUESTIONS);
-      // Select first 5 items
-      this.questions = shuffledQuestions.slice(0, 5);
+      // Set value to questions
+      this.questions = shuffledQuestions.slice(0, this.totalQuestions);
     },
 
-    async validateAnswer(data: ScriptBody) {
-      const result = await requests.post('/execute', data);
-      console.log(result);
+    /**
+     * Make POST request to API to execute an script
+     * and return its result.
+     * @param {ScriptBody} data - Script data
+     * @returns {ScriptResponse} - JDoodle response
+     */
+    async validateScript(data: ScriptBody, output?: number): Promise<ScriptResponse> {
+      const result: ScriptResponse = await requests.post('/execute', {
+        ...data,
+        output,
+      });
+
+      return result;
     },
 
-    async submitQuestion(data: string) {
-
-    },
-
-    async getJDoodleToken(credentials: AuthCredentials) {
+    /**
+     * Make POST request to API to get user token to be
+     * used to connect with Websocket
+     * @param {JDoodleCredentials} credentials - JDoodle credentials
+     */
+    async getJDoodleToken(credentials: JDoodleCredentials): Promise<void> {
       this.jdoodleToken = await requests.post('/auth-token', credentials);
-      console.log('token', this.jdoodleToken);
+    },
+
+    /**
+     * Set new value to 'examType'.
+     * @param {ExamEnum | null} type - Type value
+     */
+    setExamType(type: ExamEnum | null): void {
+      this.examType = type;
+    },
+
+    /**
+     * Set new value to 'examId'.
+     * @param {number} newId - Id value
+     */
+    setExamId(newId: number): void {
+      this.examId = newId;
+    },
+
+    /**
+     * Reset all status for every testCase from questions.
+     */
+    resetQuestionsStatus(): void {
+      this.questions = this.questions.map((q) => ({
+        ...q,
+        testCases: q.testCases.map((t) => ({
+          ...t,
+          status: false,
+        }))
+      }));
+    },
+
+    /**
+     * Force state to initial data
+     */
+    reset(): void {
+      this.$state = { ...INITIAL_EXAM_STATE };
     },
   },
 });

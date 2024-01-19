@@ -5,10 +5,31 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: () => import('@/views/UserExamView.vue'),
+      name: 'Home',
+      meta: { requiresAuth: true },
+      redirect: { name: 'ExamSettings' },
+      component: () => import('@/views/HomeView.vue'),
+      children: [...examRoutes],
     },
+    ...authRoutes
   ]
 });
 
-export default router
+/**
+ * Check if 'accessToken' esists and to allow routing,
+ * if not ... User will be redirected to 'SignIn' route.
+ */
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+
+  if (to.meta.requiresAuth) {
+    if (!authStore.accessToken.length) {
+      next({ name: 'SignIn' });
+      return;
+    }
+  }
+
+  next();
+});
+
+export default router;
